@@ -1,0 +1,65 @@
+\documentclass{article}
+
+\textwidth = 6.5 in
+\textheight = 9 in
+\oddsidemargin = 0.0 in
+\evensidemargin = 0.0 in
+\topmargin = 0.0 in
+\headheight = 0.0 in
+\headsep = 0.0 in
+
+\begin{document}
+\title{My Vim CheatSheet}
+\author{Jeremy Cowgar}
+
+\maketitle
+
+\section{My Special Mappings}
+\begin{tabular}{ | l | l || l | l | }
+  \hline
+  go, gO & add line below or above & ,ff & fuzzy file finder \\ \hline
+  ,fb & fuzzy buffer selector & ,ft & fuzzy tag finder \\ \hline
+  C-s & save file & ,v & edit my .vimrc \\ \hline
+  ,qo & open quick fix buffer & ,qn & next quick fix \\ \hline
+  ,qf & first quick fix item & ,qq & close quick fix buffer \\ \hline
+\end{tabular}
+
+\section{Basics}
+\begin{tabular}{ | l | l || l | l | }
+  \hline
+  /, ? & search forward, backward & *, \#, g*, g\# & search word under cursor \\ \hline
+  /c & makes a search case insensitive & u, c-R & undo and redo \\ \hline
+  set showcmd & shows the commands I enter & c-w = & splits same size \\ \hline
+  c-w \textunderscore & maximize split vertically & c-w $|$ & maximize split horizontally \\ \hline
+  :\#t\# & copy from-to \\ \hline
+\end{tabular}
+
+\section{Motions}
+\begin{tabular}{ | l | l || l | l | }
+  \hline
+  gg, G & top and bottom of file & i & motion inner \\ \hline
+  wW, bB, eE & word movement commands & g; and g, & move forward/backward in change list \\ \hline
+  c-o, c-i & forward/backward in jump list & \% & matching brace \\ \hline
+  0, \^{} and \$ & line, start, 1st char, end & f, F & find forward and backward \\ \hline
+  t, T & find until forward and backward & ; & repeat last f, F, t, T command \\ \hline
+  HML & high, middle and low & c-f, c-b & up/down page at a time \\ \hline
+  ma, mb, mc & mark a position & 'a, 'b, 'c & goto the line of marked position \\ \hline
+  `a, `b, `c & goto exact position & c-u, c-d & up/down 1/2 page \\ \hline
+  zt, zz, zb & \multicolumn{3}{|l|}{center current line top, middle, bottom of the screen} \\ \hline
+\end{tabular}
+
+\section{Folding}
+\begin{tabular}{ | l | l || l | l | }
+  \hline
+  zi & enable/disable folding & za & fold/unfold current text \\ \hline
+  zA & fold/unfold all surrounding code & zj, zk & move between folds \\ \hline
+\end{tabular}
+
+\section{Insert Mode}
+\begin{tabular}{ | l | l || l | l | }
+  \hline
+  ctrl-o & \multicolumn{3}{|l|}{perform one command in normal mode then enter insert mode again} \\ \hline
+\end{tabular}
+
+\end{document}
+
