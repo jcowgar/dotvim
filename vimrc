@@ -134,6 +134,9 @@ augroup myfiletypes
 
 	" edifiles
 	autocmd BufNewFile,BufRead *.dat,*.edi set ft=edifile
+
+    " rst files
+    autocmd BufNewFIle,BufRead *.rst set textwidth=78 wrap
 augroup END
 
 "
@@ -191,3 +194,5 @@ nno <Leader>qf :cnf<CR>zz
 nno <Leader>qq :ccl<CR>zz
 nno <Leader>qo :copen<CR>zz
 
+nno <Leader>gs :Gstatus<CR>
+nno <Leader>gd :Gdiff<CR>
