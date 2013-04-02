@@ -23,9 +23,10 @@ Bundle 'rstacruz/sparkup'
 Bundle 'paradigm/vim-multicursor'
 Bundle 'paradigm/SkyBison'
 Bundle 'UltiSnips'
-"Bundle 'Valloric/YouCompleteMe'
+Bundle 'Valloric/YouCompleteMe'
 Bundle 'SimpylFold'
 Bundle 'vim-flake8'
+Bundle 'AutoTag'
 
 filetype plugin indent on
 
@@ -37,9 +38,9 @@ filetype plugin indent on
 autocmd! bufwritepost ~/.vimrc source %
 autocmd! bufwritepost ~/.vim/vimrc source %
 " Change my leader from the default of \ to , which is easier on my hands
-let mapleader=","
+"let mapleader=","
 " We're running Vim, not Vi and for a reason!
-set nocompatible                 
+set nocompatible
 " Make backspace sensible
 set backspace=indent,eol,start
 " Hide the mouse when we begin to type
@@ -51,15 +52,15 @@ set directory=~/.backups
 " Ignore quite a file files during wildcard actions
 set wildignore=*.swp,*.bak,*.pyc,*.o,*.class
 " (% to bounce from do to end, etc.)
-runtime! macros/matchit.vim      
+runtime! macros/matchit.vim
 " always do spell checking
 set spell
 " disable capitalization check during spell checking
 set spellcapcheck=""
 " default includes <Tab> which breaks UltiSnips
-let g:ycm_key_list_select_completion = ['<Down>']
+"let g:ycm_key_list_select_completion = ['<Down>']
 " complete words in current buffer, windows, buffers and taglist
-set complete=".,w,b,t"
+"set complete=".,w,b,t"
 
 "
 " Display
@@ -71,26 +72,27 @@ colorscheme solarized
 " We always want syntax highlighting when it is available
 syntax on
 " last window will always have a status bar
-set laststatus=2                 
+set laststatus=2
 " fancy menu for completion
 set wildmenu
 " show the matching parens
 set showmatch
 " blink 5 times for matching paren
-set mat=5                        
+set mat=5
 set ruler
 " turn on line numbers for easy cursor movement
 set number
 " draw a vertical bar at column 79
-set colorcolumn=79               
+set colorcolumn=79
 " always show 2 lines on either side of the cursor
-set scrolloff=2                  
-" Change the color of the text and background when the text of a line goes
-" over 80 characters
-"highlight OverLength ctermbg=red ctermfg=white guibg=#ffd9d9
-"match OverLength /\%81v.\+/
+set scrolloff=2
 " highlight search matches
 set hlsearch
+" Show certain invisible characters
+set listchars=tab:→\ ,trail:·
+set listchars+=extends:>
+set listchars+=precedes:<
+set list
 
 " Indentation
 set noexpandtab                  " do not change tabs to spaces
@@ -123,13 +125,13 @@ augroup myfiletypes
 	autocmd!
 
 	" vim should be indented with tabs 4 spaces wide
-	autocmd FileType vim set sw=4 ts=4
+	autocmd FileType vim setlocal sw=4 ts=4
 
 	" autoindent with 4 spaces, always expand tabs to spaces
-	autocmd FileType python set sw=4 ts=4 sts=4 et nowrap
+	autocmd FileType python setlocal sw=4 ts=4 sts=4 et nowrap
 
 	" Strip trailing whitespaces on several source file types
-	autocmd FileType python,html,javascript 
+	autocmd FileType python,html,javascript
 		\ autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
 
 	" edifiles
@@ -137,6 +139,12 @@ augroup myfiletypes
 
     " rst files
     autocmd BufNewFIle,BufRead *.rst set textwidth=78 wrap
+
+	" update ctags automatically
+	"autocmd BufWritePost *
+	"	\ if filereadable('tags') |
+	"	\ 	call system('ctags -a '.expand('%')) |
+	"	\ endif
 augroup END
 
 "
@@ -156,25 +164,25 @@ nnoremap <silent> <Leader>ff :FufCoverageFile<CR>
 nnoremap <silent> <Leader>ft :FufTag<CR>
 nnoremap <silent> <Leader>fb :FufBuffer<CR>
 
-map <C-h> <C-w>h
-map <C-j> <C-w>j
-map <C-k> <C-w>k
-map <C-l> <C-w>l
+"map <C-h> <C-w>h
+"map <C-j> <C-w>j
+"map <C-k> <C-w>k
+"map <C-l> <C-w>l
 
-nmap <Up> <Nop>
-nmap <Down> <Nop>
-nmap <Left> <Nop>
-nmap <Right> <Nop>
+"nmap <Up> <Nop>
+"nmap <Down> <Nop>
+"nmap <Left> <Nop>
+"nmap <Right> <Nop>
 
-imap <Up> <Nop>
-imap <Down> <Nop>
-imap <Left> <Nop>
-imap <Right> <Nop>
+"imap <Up> <Nop>
+"imap <Down> <Nop>
+"imap <Left> <Nop>
+"imap <Right> <Nop>
 
-vmap <Up> <Nop>
-vmap <Down> <Nop>
-vmap <Left> <Nop>
-vmap <Right> <Nop>
+"vmap <Up> <Nop>
+"vmap <Down> <Nop>
+"vmap <Left> <Nop>
+"vmap <Right> <Nop>
 
 "nnoremap : :<c-u>call SkyBison("")<cr>
 
@@ -194,5 +202,12 @@ nno <Leader>qf :cnf<CR>zz
 nno <Leader>qq :ccl<CR>zz
 nno <Leader>qo :copen<CR>zz
 
-nno <Leader>gs :Gstatus<CR>
-nno <Leader>gd :Gdiff<CR>
+nno <Leader>ss :Gstatus<CR>
+nno <Leader>sd :Gdiff<CR>
+nno <Leader>sb :Gblame<CR>
+nno <Leader>sp :Git push<CR>
+nno <Leader>sP :Git pull<CR>
+
+" lint checking on python files
+nno <Leader>l :call Flake8()<CR>
+
