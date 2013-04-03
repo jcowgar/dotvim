@@ -8,28 +8,20 @@
 
 filetype off
 
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
-
-" Load a few bundles that I like to use
-Bundle 'gmarik/vundle'
-Bundle 'tpope/vim-fugitive'
-Bundle 'altercation/vim-colors-solarized'
-Bundle 'Lokaltog/vim-easymotion'
-Bundle 'L9'
-Bundle 'FuzzyFinder'
-Bundle 'Command-T'
-Bundle 'rstacruz/sparkup'
-Bundle 'paradigm/vim-multicursor'
-Bundle 'paradigm/SkyBison'
-Bundle 'UltiSnips'
-Bundle 'Valloric/YouCompleteMe'
-Bundle 'SimpylFold'
-Bundle 'vim-flake8'
-Bundle 'AutoTag'
+call pathogen#incubate()
+call pathogen#helptags()
 
 filetype plugin indent on
 
+let g:SuperTabContextTextOmniPrecedence = ['&omnifun', '&completefunc']
+let g:SuperTabContextDiscoverDiscovery =
+	\ ["&completefunc:<c-x><c-u>", "&omnifunc:<c-x><c-o>"]
+
+  autocmd FileType *
+    \ if &omnifunc != '' |
+    \   call SuperTabChain(&omnifunc, "<c-p>") |
+    \   call SuperTabSetDefaultCompletionType("<c-x><c-u>") |
+    \ endif
 "
 " General
 "
@@ -37,8 +29,6 @@ filetype plugin indent on
 " reload vimrc when it is saved
 autocmd! bufwritepost ~/.vimrc source %
 autocmd! bufwritepost ~/.vim/vimrc source %
-" Change my leader from the default of \ to , which is easier on my hands
-"let mapleader=","
 " We're running Vim, not Vi and for a reason!
 set nocompatible
 " Make backspace sensible
@@ -57,10 +47,6 @@ runtime! macros/matchit.vim
 set spell
 " disable capitalization check during spell checking
 set spellcapcheck=""
-" default includes <Tab> which breaks UltiSnips
-"let g:ycm_key_list_select_completion = ['<Down>']
-" complete words in current buffer, windows, buffers and taglist
-"set complete=".,w,b,t"
 
 "
 " Display
@@ -79,9 +65,10 @@ set wildmenu
 set showmatch
 " blink 5 times for matching paren
 set mat=5
-set ruler
 " turn on line numbers for easy cursor movement
 set number
+" Do not add any additional padding to the number list
+set numberwidth=1
 " draw a vertical bar at column 79
 set colorcolumn=79
 " always show 2 lines on either side of the cursor
@@ -110,6 +97,10 @@ if has("gui_macvim")
 	set guifont=Inconsolata\ for\ Powerline:h18
 	let macvim_hig_shift_movement = 1
 endif
+if !has("gui_running")
+	set spell!
+	colorscheme default
+endif
 
 runtime! macros/matchit.vim
 
@@ -130,21 +121,21 @@ augroup myfiletypes
 	" autoindent with 4 spaces, always expand tabs to spaces
 	autocmd FileType python setlocal sw=4 ts=4 sts=4 et nowrap
 
+	" autocompletion
+	autocmd FileType python set omnifunc=pythoncomplete#Complete
+
 	" Strip trailing whitespaces on several source file types
-	autocmd FileType python,html,javascript
+	autocmd FileType python,html,javascript,tcl
 		\ autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
 
 	" edifiles
 	autocmd BufNewFile,BufRead *.dat,*.edi set ft=edifile
 
     " rst files
-    autocmd BufNewFIle,BufRead *.rst set textwidth=78 wrap
+    autocmd BufNewFile,BufRead *.rst set textwidth=78 wrap
 
-	" update ctags automatically
-	"autocmd BufWritePost *
-	"	\ if filereadable('tags') |
-	"	\ 	call system('ctags -a '.expand('%')) |
-	"	\ endif
+	" tcl files
+	autocmd FileType tcl set sw=4 ts=4 sts=4 et nowrap nospell
 augroup END
 
 "
@@ -153,8 +144,15 @@ augroup END
 "let g:flake8_ignore="E501,W293"
 "let g:flake8_max_line_length=90
 let g:SimpylFold_docstring_preview=1
+let g:pyflakes_use_quickfix = 0
 
 " Key mappings
+
+" Change my leader from the default of \ to , which is easier on my hands
+let mapleader=","
+
+map <Leader>1 <Plug>TaskList
+map <Leader>g :GundoToggle<CR>
 
 " easy mapping to save the file in both normal and insert modes
 nno <silent> <C-s> :w<CR>
@@ -164,10 +162,10 @@ nnoremap <silent> <Leader>ff :FufCoverageFile<CR>
 nnoremap <silent> <Leader>ft :FufTag<CR>
 nnoremap <silent> <Leader>fb :FufBuffer<CR>
 
-"map <C-h> <C-w>h
-"map <C-j> <C-w>j
-"map <C-k> <C-w>k
-"map <C-l> <C-w>l
+map <C-h> <C-w>h
+map <C-j> <C-w>j
+map <C-k> <C-w>k
+map <C-l> <C-w>l
 
 "nmap <Up> <Nop>
 "nmap <Down> <Nop>
@@ -210,4 +208,34 @@ nno <Leader>sP :Git pull<CR>
 
 " lint checking on python files
 nno <Leader>l :call Flake8()<CR>
+
+" Python testing
+nno <Leader>tf :Pytest file<CR>
+nno <Leader>tc :Pytest class<CR>
+nno <Leader>tm :Pytest method<CR>
+nno <Leader>tn :Pytest next<CR>
+nno <Leader>tp :Pytest previous<CR>
+nno <Leader>te :Pytest error<CR>
+
+nno <Leader>bb :CommandTBuffer<CR>
+nno <Leader>bf :CommandT<CR>
+nno <Leader>bd :bd<CR>
+
+nno <Leader>rg :RopeGotoDefinition<CR>
+nno <Leader>rr :RopeRename<CR>
+
+nno <Leader>a <ESC>:Ack!
+nno <Leader>n :NERDTreeToggle<CR>
+
+" Add the virtualenv's site-packages to vim path
+py << EOF
+import os.path
+import sys
+import vim
+if 'VIRTUAL_ENV' in os.environ:
+    project_base_dir = os.environ['VIRTUAL_ENV']
+    sys.path.insert(0, project_base_dir)
+    activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+    execfile(activate_this, dict(__file__=activate_this))
+EOF
 

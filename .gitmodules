@@ -6,10 +6,6 @@
   path = bundle/Command-T
   url = https://github.com/vim-scripts/Command-T.git
 
-[submodule "bundle/FuzzyFinder"]
-	path = bundle/FuzzyFinder
-	url = https://github.com/vim-scripts/FuzzyFinder.git
-
 [submodule "bundle/L9"]
 	path = bundle/L9
 	url = https://github.com/vim-scripts/L9.git
@@ -29,6 +25,10 @@
 [submodule "bundle/YouCompleteMe"]
 	path = bundle/YouCompleteMe
 	url = https://github.com/Valloric/YouCompleteMe.git
+
+[submodule "bundle/supertab"]
+	path = bundle/supertab
+	url = git://github.com/ervandew/supertab.git
 
 [submodule "bundle/sparkup"]
 	path = bundle/sparkup
@@ -61,3 +61,33 @@
 [submodule "misc/powerline-fonts"]
 	path = misc/powerline-fonts
 	url = git://github.com/Lokaltog/powerline-fonts.git
+[submodule "bundle/surround"]
+	path = bundle/surround
+	url = https://github.com/tpope/vim-surround.git
+[submodule "bundle/ack"]
+	path = bundle/ack
+	url = https://github.com/mileszs/ack.vim.git
+[submodule "bundle/gundo"]
+	path = bundle/gundo
+	url = https://github.com/sjl/gundo.vim.git
+[submodule "bundle/pydoc"]
+	path = bundle/pydoc
+	url = https://github.com/fs111/pydoc.vim.git
+[submodule "bundle/py.test"]
+	path = bundle/py.test
+	url = https://github.com/alfredodeza/pytest.vim.git
+[submodule "bundle/makegreen"]
+	path = bundle/makegreen
+	url = https://github.com/reinh/vim-makegreen
+[submodule "bundle/tasklist"]
+	path = bundle/tasklist
+	url = https://github.com/vim-scripts/TaskList.vim.git
+[submodule "bundle/nerdtree"]
+	path = bundle/nerdtree
+	url = https://github.com/vim-scripts/The-NERD-tree.git
+[submodule "bundle/ropevim"]
+	path = bundle/ropevim
+	url = https://github.com/sontek/rope-vim.git
+[submodule "bundle/pyflakes-pathogen"]
+	path = bundle/pyflakes-pathogen
+	url = https://github.com/mitechie/pyflakes-pathogen.git
